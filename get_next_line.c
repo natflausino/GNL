@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 21:29:53 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 22:39:11 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/06 23:57:23 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*do_line(char *str_temp, int n, char **line)
 	int		i;
 
 	i = 0;
-	while (*(str_temp + i) != '\n' || *(str_temp + i) != '\0')
+	while (*(str_temp + i) != '\n' && *(str_temp + i) != '\0')
 		i++;
 	*(str_temp + i) = '\0';
 	if(!(*line = ft_strdup(str_temp)))
@@ -36,13 +36,15 @@ int		do_read(int fd, char *buffer, char **str_temp, int *n)
 	while(*n && (!(ft_strchr(*str_temp, '\n'))))
 	{
 		*n = read(fd, buffer, BUFFER_SIZE);
-		if(!(*n))
+		if((*n < 0 || *n > BUFFER_SIZE))
 		{
+			free(buffer);
 			return(0);
 		}
 		*(buffer + *n) = '\0';
 		*str_temp = ft_strjoin(*str_temp, buffer);
 	}
+	free(buffer);
 	return(1);
 }
 
