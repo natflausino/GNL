@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 13:50:50 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 00:36:01 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/06 22:22:50 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (0);
 	if (!(str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
+	{
+		free(s1);
 		return (0);
+	}
 	while (s1[i] != '\0')
 	{
 		str[i] = s1[i];

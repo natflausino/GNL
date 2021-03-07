@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 21:29:53 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 01:14:00 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/06 22:22:28 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*do_line(char *str_temp, int n, char **line)
 
 int		do_read(int fd, char *buffer, char **str_temp, int n)
 {
-	while(n && (!(ft_strchr(*str_temp, '\n'))))
+	while(!(n = read(fd, buffer, BUFFER_SIZE)) && (!(ft_strchr(*str_temp, '\n'))))
 	{
 		n = read(fd, buffer, BUFFER_SIZE);
 		if((!n))
@@ -57,7 +57,9 @@ int		get_next_line(int fd, char **line)
 	n = 1;
 	if (!line || fd < 0  || fd > LIMITED || BUFFER_SIZE <= 0)
 		return (-1);
-	buffer = malloc(sizeof(char*) * (BUFFER_SIZE + 1));
+	if (!str_temp)
+		str_temp = ft_strdup("");
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (-1);
 	if(!(do_read(fd, buffer, &str_temp, n)))
