@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 21:29:53 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 22:22:28 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/06 22:35:13 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ char	*do_line(char *str_temp, int n, char **line)
 	return(str_extra);
 }
 
-int		do_read(int fd, char *buffer, char **str_temp, int n)
+int		do_read(int fd, char *buffer, char **str_temp, int *n)
 {
-	while(!(n = read(fd, buffer, BUFFER_SIZE)) && (!(ft_strchr(*str_temp, '\n'))))
+	while(*n && (!(ft_strchr(*str_temp, '\n'))))
 	{
-		n = read(fd, buffer, BUFFER_SIZE);
-		if((!n))
+		*n = read(fd, buffer, BUFFER_SIZE);
+		if(!(*n))
 		{
 			free(buffer);
 			return(0);
 		}
-		*(buffer + n) = '\0';
+		*(buffer + *n) = '\0';
 		*str_temp = ft_strjoin(*str_temp, buffer);
 	}
 	free(buffer);
@@ -62,7 +62,7 @@ int		get_next_line(int fd, char **line)
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (-1);
-	if(!(do_read(fd, buffer, &str_temp, n)))
+	if(!(do_read(fd, buffer, &str_temp, &n)))
 		return (-1);
 	str_temp = do_line(str_temp, n, line);
 	if(!n)

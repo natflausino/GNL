@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 21:30:32 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 00:53:08 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/06 22:29:51 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 int		get_next_line(int fd, char **line);
 void	*ft_memset(void *b, int c, size_t len);
 size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 
