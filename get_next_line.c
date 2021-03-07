@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 21:29:53 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 23:57:23 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/07 00:26:51 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,30 @@ char	*do_line(char *str_temp, int n, char **line)
 	while (*(str_temp + i) != '\n' && *(str_temp + i) != '\0')
 		i++;
 	*(str_temp + i) = '\0';
-	if(!(*line = ft_strdup(str_temp)))
+	if (!(*line = ft_strdup(str_temp)))
 		return (NULL);
 	if (n != 0)
-		if(!(str_extra = ft_strdup(str_temp + i + 1)))
+		if (!(str_extra = ft_strdup(str_temp + i + 1)))
 			return (NULL);
 	free(str_temp);
-	return(str_extra);
+	return (str_extra);
 }
 
 int		do_read(int fd, char *buffer, char **str_temp, int *n)
 {
-	while(*n && (!(ft_strchr(*str_temp, '\n'))))
+	while (*n && (!(ft_strchr(*str_temp, '\n'))))
 	{
 		*n = read(fd, buffer, BUFFER_SIZE);
-		if((*n < 0 || *n > BUFFER_SIZE))
+		if ((*n < 0 || *n > BUFFER_SIZE))
 		{
 			free(buffer);
-			return(0);
+			return (0);
 		}
 		*(buffer + *n) = '\0';
 		*str_temp = ft_strjoin(*str_temp, buffer);
 	}
 	free(buffer);
-	return(1);
+	return (1);
 }
 
 int		get_next_line(int fd, char **line)
@@ -55,17 +55,17 @@ int		get_next_line(int fd, char **line)
 	int			n;
 
 	n = 1;
-	if (!line || fd < 0  || fd > LIMITED || BUFFER_SIZE <= 0)
+	if (!line || fd < 0 || fd > LIMITED || BUFFER_SIZE <= 0)
 		return (-1);
 	if (!str_temp)
 		str_temp = ft_strdup("");
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (-1);
-	if(!(do_read(fd, buffer, &str_temp, &n)))
+	if (!(do_read(fd, buffer, &str_temp, &n)))
 		return (-1);
 	str_temp = do_line(str_temp, n, line);
-	if(!n)
+	if (!n)
 		return (0);
 	return (1);
 }
