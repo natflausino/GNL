@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 21:29:53 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/06 22:35:13 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/06 22:39:11 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,11 @@ int		do_read(int fd, char *buffer, char **str_temp, int *n)
 		*n = read(fd, buffer, BUFFER_SIZE);
 		if(!(*n))
 		{
-			free(buffer);
 			return(0);
 		}
 		*(buffer + *n) = '\0';
 		*str_temp = ft_strjoin(*str_temp, buffer);
 	}
-	free(buffer);
 	return(1);
 }
 
