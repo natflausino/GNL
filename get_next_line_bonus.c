@@ -6,13 +6,13 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 23:19:28 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/08 23:25:19 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/09 00:02:06 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char			*ft_substr(char const *s, unsigned int start, size_t len)
+char			*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char		*str;
 	size_t		size;
@@ -46,8 +46,8 @@ char			*do_line(char *str_temp, int n, char **line)
 	}
 	else
 	{
-		*line = t_strdup(temp);
-		free(temp);
+		*line = ft_strdup(str_temp);
+		free(str_temp);
 	}
 	if (n != 0)
 		if (!str_extra)
@@ -68,7 +68,7 @@ int				do_read(int fd, char *buffer, char **str_temp, int *n)
 			return (0);
 		}
 		*(buffer + *n) = '\0';
-		*other_temp = ft_strjoin(*str_temp, buffer);
+		other_temp = ft_strjoin(*str_temp, buffer);
 		free(*str_temp);
 		*str_temp = other_temp;
 	}
