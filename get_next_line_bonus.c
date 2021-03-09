@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/02 21:29:53 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/08 23:20:42 by nbarreir         ###   ########.fr       */
+/*   Created: 2021/03/08 23:19:28 by nbarreir          #+#    #+#             */
+/*   Updated: 2021/03/08 23:25:19 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char			*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -78,20 +78,20 @@ int				do_read(int fd, char *buffer, char **str_temp, int *n)
 
 int				get_next_line(int fd, char **line)
 {
-	static char	*str_temp;
+	static char	*str_temp[OPEN_MAX];
 	char		*buffer;
 	int			n;
 
 	n = 1;
 	if (!line || fd < 0 || fd > LIMITED || BUFFER_SIZE <= 0)
 		return (-1);
-	if (!str_temp)
-		str_temp = ft_strdup("");
+	if (!str_temp[fd])
+		str_temp[fd] = ft_strdup("");
 	if (!(buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (-1);
-	if (!(do_read(fd, buffer, &str_temp, &n)))
+	if (!(do_read(fd, buffer, &str_temp[fd], &n)))
 		return (-1);
-	str_temp = do_line(str_temp, n, line);
+	str_temp[fd] = do_line(str_temp[fd], n, line);
 	if (!n)
 		return (0);
 	return (1);
