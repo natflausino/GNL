@@ -6,60 +6,61 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 23:19:28 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/09 00:02:06 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/09 00:08:29 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char			*ft_substr(char *s, unsigned int start, size_t len)
+char		*ft_substr(char *s, unsigned int start, size_t len)
 {
-	char		*str;
-	size_t		size;
+	char	*subs;
+	size_t	sizestr;
 
 	if (!s)
 		return (0);
-	size = ft_strlen(s) + 1;
-	if (start > size)
+	sizestr = ft_strlen(s) + 1;
+	if (start > sizestr)
 		return (ft_strdup(""));
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
+	subs = (char *)malloc(sizeof(char) * (len + 1));
+	if (!subs)
 		return (0);
-	str_copy(str, (s + start), len + 1);
-	str[len] = '\0';
-	return (str);
+	str_copy(subs, (s + start), len + 1);
+	subs[len] = '\0';
+	return (subs);
 }
 
-char			*do_line(char *str_temp, int n, char **line)
+char		*new_line(char *temp, char **line, int n)
 {
-	char		*str_extra;
-	int			i;
+	char	*extra;
+	int		i;
 
+	extra = NULL;
 	i = 0;
-	while ((*(str_temp + i) != '\n') && (*(str_temp + i) != '\0'))
+	while ((*(temp + i) != '\n') && (*(temp + i) != '\0'))
 		i++;
-	if ((str_temp)[i] == '\n')
+	if (temp[i] == '\n')
 	{
-		*line = ft_substr(str_temp, 0, i);
-		str_extra = ft_strdup(&((str_temp)[i + 1]));
-		free(str_temp);
+		*line = ft_substr(temp, 0, i);
+		extra = ft_strdup(&((temp)[i + 1]));
+		free(temp);
 	}
 	else
 	{
-		*line = ft_strdup(str_temp);
-		free(str_temp);
+		*line = ft_strdup(temp);
+		free(temp);
 	}
 	if (n != 0)
-		if (!str_extra)
+		if (!extra)
 			return (NULL);
-	return (str_extra);
+	return (extra);
 }
 
-int				do_read(int fd, char *buffer, char **str_temp, int *n)
+int			do_read(int fd, char *buffer, char **temp, int *n)
 {
-	char		*other_temp;
+	char *othertemp;
 
-	while (*n && (!(ft_strchr(*str_temp, '\n'))))
+	while (*n && (!(ft_strchr(*temp, '\n'))))
 	{
 		*n = read(fd, buffer, BUFFER_SIZE);
 		if (*n < 0 || *n > BUFFER_SIZE)
@@ -68,30 +69,30 @@ int				do_read(int fd, char *buffer, char **str_temp, int *n)
 			return (0);
 		}
 		*(buffer + *n) = '\0';
-		other_temp = ft_strjoin(*str_temp, buffer);
-		free(*str_temp);
-		*str_temp = other_temp;
+		othertemp = ft_strjoin(*temp, buffer);
+		free(*temp);
+		*temp = othertemp;
 	}
 	free(buffer);
 	return (1);
 }
 
-int				get_next_line(int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
-	static char	*str_temp[OPEN_MAX];
 	char		*buffer;
 	int			n;
+	static char *temp[OPEN_MAX];
 
 	n = 1;
-	if (!line || fd < 0 || fd > LIMITED || BUFFER_SIZE <= 0)
+	if (fd < 0 || !line || BUFFER_SIZE <= 0 || fd > RLIMIT_NOFILE)
 		return (-1);
-	if (!str_temp[fd])
-		str_temp[fd] = ft_strdup("");
-	if (!(buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+	if (!temp[fd])
+		temp[fd] = ft_strdup("");
+	if (!(buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char))))
 		return (-1);
-	if (!(do_read(fd, buffer, &str_temp[fd], &n)))
+	if (!(do_read(fd, buffer, &temp[fd], &n)))
 		return (-1);
-	str_temp[fd] = do_line(str_temp[fd], n, line);
+	temp[fd] = new_line(temp[fd], line, n);
 	if (!n)
 		return (0);
 	return (1);

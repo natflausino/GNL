@@ -6,7 +6,7 @@
 /*   By: nbarreir <nbarreir@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/08 23:19:31 by nbarreir          #+#    #+#             */
-/*   Updated: 2021/03/08 23:23:16 by nbarreir         ###   ########.fr       */
+/*   Updated: 2021/03/09 00:08:51 by nbarreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <stdlib.h>
 # include <ctype.h>
 # include <limits.h>
-
-# define LIMITED RLIMIT_NOFILE
 
 int				get_next_line(int fd, char **line);
 size_t			ft_strlen(const char *s);
